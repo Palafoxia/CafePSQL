@@ -378,7 +378,7 @@ public class Cafe {
          System.out.println("Wrong username/password!");
          return null;
       } catch(Exception e) {
-         System.err.println (e.getMessage ());
+         System.err.println (e.getMessage());
          return null;
       }
    } // end
@@ -575,7 +575,7 @@ public static void UpdateProfile(Cafe esql, String login) {
 
    // 4. "Update an Order"
    public static void UpdateOrder(Cafe esql, String login) {
-      try{
+      try {
          //Code Here
          clear();
          
@@ -693,15 +693,15 @@ private static void search(Cafe esql) {
          System.out.println ("total row(s): " + rowCount);
       }
    } catch(Exception e) {
-      System.err.println (e.getMessage ());
+      System.err.println(e.getMessage());
    }
 }
 
 // Guided Search
-private static void guided(Cafe esql, String login){
+private static void guided(Cafe esql, String login) {
    try {
       String chosenType = findItem(esql, login);
-      if(chosenType != null){
+      if(chosenType != null) {
          clear();
          System.out.println(chosenType.toUpperCase());
          System.out.println("---------");
@@ -780,7 +780,7 @@ private static void deleteItem(Cafe esql, String login) {
       System.out.println(itemname.toUpperCase());
       System.out.println("---------");
 
-      if(itemname != null){
+      if(itemname != null) {
          String query = String.format("DELETE FROM menu WHERE itemname = '%s'", itemname);
          esql.executeUpdate(query);
          System.out.println ("Item successfully deleted!");
@@ -865,7 +865,8 @@ private static void printAndNumberResult(List<List<String>> results, int colCoun
    System.out.println("" + results.size() + ". < Exit\n");
 }
 
-private static String getInputStringFromDynamic(List<List<String>> results){
+// Dyanmic Input Handler
+private static String getInputStringFromDynamic(List<List<String>> results) {
    boolean runChoice = true;
    String chosenType = null;
    while(runChoice) { //Allows typoes without re-entering menu
@@ -882,18 +883,19 @@ private static String getInputStringFromDynamic(List<List<String>> results){
    return chosenType;
 }
 
-private static int getInputPosFromDynamic(List<List<String>> results){
+// Dyanmic Input Handler
+private static int getInputPosFromDynamic(List<List<String>> results) {
    boolean runChoice = true;
    int choice = -1;
    while(runChoice) { //Allows typoes without re-entering menu
       choice = readChoice();
-      if(results.size() == choice){ //Exit program
+      if(results.size() == choice) { //Exit program
          choice = -1;
          runChoice = false;
       }
-      else if(0 <= choice && results.size() > choice) //Allowed choice
+      else if(0 <= choice && results.size() > choice) { //Allowed choice
          runChoice = false;
-      else {
+      } else {
          System.out.println("Unrecognized choice!");
       }
    }
@@ -973,23 +975,23 @@ private static List<List<String>> parseFavorites(Cafe esql, String login) {
       tmp.add("" + lastPos);
       favorites.add(tmp);
       return favorites;
-   }catch(Exception e) {
-      System.err.println (e.getMessage ());
+   } catch(Exception e) {
+      System.err.println (e.getMessage());
       return null;
    }
 }
 
 //Intended to be used with getInputDynamic
-private static List<List<String>> removeFromFavorites(Cafe esql, String login, List<List<String>> parsed, int remove){
+private static List<List<String>> removeFromFavorites(Cafe esql, String login, List<List<String>> parsed, int remove) {
    try {
       String query = String.format("SELECT favitems FROM users WHERE login = '%s'", login);
       List<List<String>> rs = esql.executeQueryAndReturnResult(query);
       String result = rs.get(0).get(0);
       int firstPos = Integer.parseInt(parsed.get(remove).get(1));
       int lastPos = Integer.parseInt(parsed.get(remove).get(2));
-      if (0 < firstPos)
+      if (0 < firstPos) {
          firstPos--;
-      else {
+      } else {
          lastPos++;
       }
       int size = lastPos - firstPos;
@@ -1005,22 +1007,22 @@ private static List<List<String>> removeFromFavorites(Cafe esql, String login, L
       query = String.format("UPDATE users SET favitems = '%s' WHERE login = '%s'", result, login);
       esql.executeQuery(query);
       return parsed;
-   }catch(Exception e){
-      System.err.println (e.getMessage ());
+   }catch(Exception e) {
+      System.err.println(e.getMessage());
       return null;
    }
 }
 
+// Add an item to a user's favorites
 private static List<List<String>> addToFavorites(Cafe esql, String login, List<List<String>> parsed, String newFavorite) {
    try {
       String query = String.format("SELECT favitems FROM users WHERE login = '%s'", login);
       List<List<String>> rs = esql.executeQueryAndReturnResult(query);
       String result = rs.get(0).get(0);
       int last = Integer.parseInt(parsed.get(parsed.size()-1).get(2));
-      if(0 < last){
+      if(0 < last) {
          result = result.substring(0, last) + ',' + newFavorite + result.substring(last);
-      }
-      else{
+      } else {
          result = newFavorite + result;
       }
       result = result.substring(0, 400);
@@ -1033,7 +1035,7 @@ private static List<List<String>> addToFavorites(Cafe esql, String login, List<L
       esql.executeQuery(query);
       return parsed;  
    } catch(Exception e) {
-      System.err.println (e.getMessage ());
+      System.err.println(e.getMessage());
       return null;
    }
 }
@@ -1053,7 +1055,7 @@ private static String findItem(Cafe esql, String login) {
       System.out.println("---------");
       printAndNumberResult(result, 1);
 
-      // 
+      // Get type of item
       String chosenType = getInputStringFromDynamic(result);
       System.out.println(chosenType);
       if(chosenType != null) {
@@ -1074,21 +1076,22 @@ private static String findItem(Cafe esql, String login) {
       else
          return null;
    } catch(Exception e) {
-      System.err.println (e.getMessage ());
+      System.err.println(e.getMessage());
       return null;
    }
 }
 
-private static String selectUserType(){
+// Prompts to select type of user
+private static String selectUserType() {
    boolean run = true;
    System.out.println("USER TYPE");
    System.out.println("---------");
    String type = null;
-   while(run){
+   while(run) {
       System.out.println("1. Customer");
       System.out.println("2. Employee");
       System.out.println("3. Manager");
-      switch(readChoice()){
+      switch(readChoice()) {
          case 1:
             type = "Customer";
             run = false;
@@ -1186,5 +1189,4 @@ private static void addOrder(Cafe esql, String login, String chosenItem) throws 
       }
    }
 } 
-
 } //end Cafe

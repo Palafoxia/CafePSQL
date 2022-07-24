@@ -8,7 +8,7 @@ It includes functionality to create multiple users and keep track of their order
 The .sql files under the `sql/` folder create and initialize a PSQL database with data for the tables Users, Menu, Orders, and ItemStatus.
 They use the data given from .csv files under the `sql/data` folder.
 
-## Running the application
+## Running the Application
 Create and connect to a PSQL server then run the sql scripts in the following order: `create_tables.sql`, `load_data.sql`, `create_indexes.sql`.
 If `load_data.sql` fails, change the .csv paths to absolute paths.
 
@@ -21,7 +21,7 @@ The directories/paths in the scripts may need to be changed.
 
 Within the application, you may login using username `Admin` and password `admin` to use Manager only menu options.
 
-## Project structure
+## Project Structure
 - The `lib/` folder contains the PSQL driver for JDBC
 - The `sql/` folder contains the sql scripts to initialize the database and create indexes
   - **Important:** You may have to change the .csv paths in `load_data.sql` to absolute paths
